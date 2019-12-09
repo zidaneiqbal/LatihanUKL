@@ -62,6 +62,26 @@ class SiswaController extends Controller
 
   }
 
+  public function index($limit = 10, $offset = 0)
+  {
+    $find = $reqest->find;
+    $siswas = Siswa::where("kelas", "like", "%$find%");
+    $siswa = array();
+
+    foreach ($siswas->take($limit)->skip($offset)->get() as $p) {
+        $item = [
+            "nis"               => $p->nis,
+            "nama_siswa"        => $p->nama_siswa,
+            "kelas"             => $p->kelas,
+            "poin"              => $p->poins,
+        ];
+
+        array_push($siswa, $item);
+    }
+    $data["siswa"] = $siswa;
+    $data["status"] = 1;
+    return response($data);
+  }
 
   public function update($id, Request $request)
   {

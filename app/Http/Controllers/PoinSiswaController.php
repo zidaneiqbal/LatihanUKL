@@ -73,9 +73,11 @@ class PoinSiswaController extends Controller
     {
         $poin = Poin_Siswa::where('id_siswa', $id)->get();
 
+        $total = 0;
         $poin_siswa = array();
         foreach ($poin as $p) {
             $item = [
+              $total += $p->pelanggaran->poin;
                 "id"              => $p->id,
                 "id_siswa"        => $p->id_siswa,
                 "id_pelanggaran"  => $p->id_pelanggaran,
@@ -87,6 +89,7 @@ class PoinSiswaController extends Controller
             array_push($poin_siswa, $item);
         }
 
+        $data["Total_Poin"] = $total;
         $data["poinSiswa"] = $poin_siswa;
         $data["status"] = 1;
         return response($data);
